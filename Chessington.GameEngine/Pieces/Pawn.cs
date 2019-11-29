@@ -19,13 +19,12 @@ namespace Chessington.GameEngine.Pieces
             var currentSquare = board.FindPiece(this);
             var pawn = new Pawn(Player);
 
-            AddMoves(availableSquares, currentSquare, pawn);
-            return availableSquares;
+            return AddMoves(availableSquares, currentSquare, pawn);
         }
 
-        private void AddMoves(List<Square> availableSquares, Square currentSquare, Pawn pawn)
+        private List<Square> AddMoves(List<Square> availableSquares, Square currentSquare, Pawn pawn)
         {
-            if (this.HasMoved)
+            if (this.HasMoved == false)
             {
                 switch (pawn.Player)
                 {
@@ -55,6 +54,8 @@ namespace Chessington.GameEngine.Pieces
                         throw new Exception("No player colours found");
                 }
             }
+
+            return availableSquares;
         }
     }
 }
