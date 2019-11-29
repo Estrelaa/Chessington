@@ -19,6 +19,10 @@ namespace Chessington.GameEngine.Pieces
         {
             var currentSquare = board.FindPiece(this);
             board.MovePiece(currentSquare, newSquare);
+            HasMoved = true;
+
         }
+
+        protected  bool HasMoved { get; set; }
     }
 }
