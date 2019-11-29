@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -10,6 +11,7 @@ namespace Chessington.GameEngine.Pieces
             : base(player)
         {
         }
+
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
 
@@ -17,33 +19,42 @@ namespace Chessington.GameEngine.Pieces
             var currentSquare = board.FindPiece(this);
             var pawn = new Pawn(Player);
 
-            if (this.HasMoved == false)
+            AddMoves(availableSquares, currentSquare, pawn);
+            return availableSquares;
+        }
+
+        private void AddMoves(List<Square> availableSquares, Square currentSquare, Pawn pawn)
+        {
+            if (this.HasMoved)
             {
-                if (pawn.Player == Player.Black)
+                switch (pawn.Player)
                 {
-                    availableSquares.Add(Square.At(currentSquare.Row + 2, currentSquare.Col));
-                    availableSquares.Add(Square.At(currentSquare.Row + 1, currentSquare.Col));
+                    case Player.Black:
+                        availableSquares.Add(Square.At(currentSquare.Row + 2, currentSquare.Col));
+                        availableSquares.Add(Square.At(currentSquare.Row + 1, currentSquare.Col));
+                        break;
+                    case Player.White:
+                        availableSquares.Add(Square.At(currentSquare.Row - 2, currentSquare.Col));
+                        availableSquares.Add(Square.At(currentSquare.Row - 1, currentSquare.Col));
+                        break;
+                    default:
+                        throw new Exception("No player colours found");
                 }
-                else if (pawn.Player == Player.White)
-                {
-                    availableSquares.Add(Square.At(currentSquare.Row - 2, currentSquare.Col));
-                    availableSquares.Add(Square.At(currentSquare.Row - 1, currentSquare.Col));
-                }
-                
             }
             else
             {
-                if (pawn.Player == Player.Black)
+                switch (pawn.Player)
                 {
-                    availableSquares.Add(Square.At(currentSquare.Row + 1, currentSquare.Col));
+                    case Player.Black:
+                        availableSquares.Add(Square.At(currentSquare.Row + 1, currentSquare.Col));
+                        break;
+                    case Player.White:
+                        availableSquares.Add(Square.At(currentSquare.Row - 1, currentSquare.Col));
+                        break;
+                    default:
+                        throw new Exception("No player colours found");
                 }
-                else if (pawn.Player == Player.White)
-                {
-                    availableSquares.Add(Square.At(currentSquare.Row - 1, currentSquare.Col));
-                }
-                
             }
-            return availableSquares;
         }
     }
 }
